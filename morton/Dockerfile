@@ -10,6 +10,7 @@ RUN apt-get update \
     && add-apt-repository ppa:fcwu-tw/ppa \
     && apt-get update \
     && apt-get install -y --no-install-recommends --allow-unauthenticated \
+        supervisor net-tools \
         lxde x11vnc xvfb \
         gtk2-engines-murrine ttf-ubuntu-font-family \
         libreoffice firefox \
@@ -32,6 +33,7 @@ ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /bin/
 RUN chmod +x /bin/tini
 
 ADD image/usr/lib/web/requirements.txt /tmp/
+RUN pip install --upgrade pip
 RUN pip install setuptools wheel && pip install -r /tmp/requirements.txt
 ADD image /
 
