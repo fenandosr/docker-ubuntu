@@ -12,13 +12,14 @@ CMD ["/sbin/my_init"]
 ENV HOME /root
 
 # Update base system
-RUN apt-get update && apt-get -y upgrade \ 
+RUN apt-get update && apt-get -y upgrade \
       && apt-get install -y language-pack-en \
       && locale-gen en_US.UTF-8 \
       && dpkg-reconfigure locales
 
 # Install basic packages
-RUN apt-get install -y build-essential software-properties-common wget curl git man unzip nano tmux colord zsh emacs vim
+RUN apt-get install -y build-essential software-properties-common wget \
+      curl git man unzip nano tmux colord zsh emacs vim
 
 # Install zsh
 RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
@@ -26,7 +27,7 @@ RUN git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh \
       && chsh -s /bin/zsh
 
 WORKDIR /root
-CMD ["zsh"]
+RUN chsh -s $(which zsh)
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
